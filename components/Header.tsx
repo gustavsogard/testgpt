@@ -1,14 +1,13 @@
-import Link from 'next/link'
+import Router from 'next/router';
 
 export default function Header() {
     return (
-        <div className='flex justify-between mb-40'>
+        <div className='flex justify-center mb-40 md:mt-0 mt-8'>
           <div>
-            <Link href="/" className='font-bold text-xl'>TestGPT</Link>
+            <button onClick={() => Router.reload()} className='font-bold text-xl'>
+              <img src="/testgpt-logo.png" width="150" />
+            </button>
           </div>
-          <p className='ml-2'>
-            Upload et tekststykke og test din viden
-          </p>
         </div>
     )
 }

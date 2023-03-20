@@ -27,16 +27,17 @@ export default function Home() {
       });
       
     if (result.status == 200 && result.data.status == 'success') {
-      setQuizStarted(true);
       setLoading(false);
+      console.log(result.data.data);
+
 
       const data = JSON.parse(result.data.data);
-      console.log(data);
 
-      if (data.status == "success") {
+      if (data.status == "success" && data.answers.length == 4) {
+        setQuizStarted(true);
         setQuizData(data);
       } else {
-        toast.error('Der skete en fejl. Prøv igen.');
+        toast.error(data.message);
       }
     } else {
       toast.error('Der skete en fejl. Prøv igen.');
@@ -84,9 +85,7 @@ function QuizWrapper(props: any) {
     )
   } else {
     return (
-      <div className='flex justify-center w-full'>
-        <Query handleSubmit={props.handleSubmit} />
-      </div>
+      <Query handleSubmit={props.handleSubmit} />
     )
   }
 }
