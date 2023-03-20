@@ -51,7 +51,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="p-10 h-screen min-w-[600px] relative bg-gradient-to-t from-white to-sky-200">
+      <div className="p-10 h-screen relative bg-gradient-to-t from-white to-sky-200">
         <Header />
 
         <div className='flex justify-center w-full'>
