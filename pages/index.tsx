@@ -14,8 +14,6 @@ export default function Home() {
   const [quizData, setQuizData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -55,7 +53,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="p-4 md:p-10 h-screen relative bg-gradient-to-t from-white to-sky-200">
+      <div className="p-4 md:p-10 h-[90%] md:h-screen relative bg-gradient-to-t from-white to-sky-200">
         <Header />
 
         <div className='flex justify-center w-full'>
