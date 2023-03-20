@@ -13,6 +13,9 @@ export default function Home() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizData, setQuizData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
