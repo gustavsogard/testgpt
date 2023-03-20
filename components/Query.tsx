@@ -27,7 +27,7 @@ export default function Query(props: any) {
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        TestGPT er en nem måde for dig at øve dig på et selvvalgt stof. Du kan indtaste et tekststykke i feltet ovenfor, der omhandler noget du gerne vil blive bedre til, og blive testet gennem nogle spørgsmål, som automatisk bliver genereret. Alt sammen ved hjælp af OpenAI's teknologi.
+                        TestGPT er en nem måde for dig at øve dig på et selvvalgt stof. Du kan indtaste et tekststykke i feltet ovenfor, der omhandler noget du gerne vil blive bedre til, og blive testet gennem nogle spørgsmål, som automatisk bliver genereret. Alt sammen ved hjælp af OpenAI teknologi.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -41,7 +41,7 @@ export default function Query(props: any) {
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Teknologien er baseret på OpenAI's GPT-3 model. Denne model er trænet på en masse forskellige tekster og kan derfor generere . Teknologien er dog ikke perfekt, så forvent ikke at få 100% relevante spørgsmål. Læs mere <a href="https://openai.com/product/" target="_blank" className='text-sky-500'>her</a>.
+                        Teknologien er baseret på OpenAIs GPT-3 model. Denne model er trænet på en masse forskellige tekster og kan derfor generere . Teknologien er dog ikke perfekt, så forvent ikke at få 100% relevante spørgsmål. Læs mere <a href="https://openai.com/product/" target="_blank" className='text-sky-500'>her</a>.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
