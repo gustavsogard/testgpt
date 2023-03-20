@@ -6,8 +6,13 @@ export default function Quiz(props: any) {
     const [answered, setAnswered] = useState(false);
     const [button, setButton] = useState("");
     const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [currentCorrectAnswer, setCurrentCorrectAnswer] = useState(props.quizData.questions[0].answers[0]);
     const [finished, setFinished] = useState(false);
     const [correct, setCorrect] = useState(0);
+
+    async function shuffle(array: []) {
+        array.sort(() => Math.random() - 0.5);
+    }
 
     function buttonClick(e: any, answer: any) {
         setButton(e.target.id);
@@ -19,6 +24,8 @@ export default function Quiz(props: any) {
         setAnswer("");
         setAnswered(false);
         setButton("");
+        setCurrentCorrectAnswer(props.quizData.questions[currentQuestion + 1].answers[0]);
+        shuffle(props.quizData.questions[currentQuestion + 1].answers);
         setCurrentQuestion(currentQuestion + 1);
     }
 
@@ -63,7 +70,7 @@ export default function Quiz(props: any) {
                             <button id="3" onClick={(e) => {buttonClick(e, props.quizData.questions[currentQuestion].answers[3])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{props.quizData.questions[currentQuestion].answers[3]}</button>
                         </div>
                     </div>
-                    <Answered quizData={props.quizData} currentQuestion={currentQuestion} answered={answered} button={button} answer={answer} increaseScore={increaseScore} nextQuestion={nextQuestion} resultsPage={resultsPage} />
+                    <Answered quizData={props.quizData} currentQuestion={currentQuestion} answered={answered} button={button} answer={answer} currentCorrectAnswer={currentCorrectAnswer} increaseScore={increaseScore} nextQuestion={nextQuestion} resultsPage={resultsPage} />
                 </>
             )}
         </div>
@@ -79,7 +86,7 @@ function Answered(props: any) {
 
         let check = false;
 
-        if (props.answer == props.quizData.questions[props.currentQuestion].answers[0]) {
+        if (props.answer == props.currentCorrectAnswer) {
             buttons[props.button].classList.add("disabled:bg-green-500");
             check = true;
             useEffect(() => {
@@ -87,6 +94,11 @@ function Answered(props: any) {
             }, []);
         } else {
             buttons[props.button].classList.add("disabled:bg-red-500");
+            buttons.forEach((button) => {
+                if (button.innerText == props.currentCorrectAnswer) {
+                    button.classList.add("disabled:bg-green-200", "disabled:text-black");
+                }
+            });
         }
 
         return (
@@ -115,7 +127,7 @@ function Answered(props: any) {
         let buttons = document.getElementById("quiz")!.querySelectorAll("button");
         buttons.forEach((button) => {
             button.disabled = false;
-            button.classList.remove("disabled:bg-green-500", "disabled:bg-red-500");
+            button.classList.remove("disabled:bg-green-500", "disabled:bg-red-500", "disabled:bg-green-200", "disabled:text-black");
         });
 
         return null;
