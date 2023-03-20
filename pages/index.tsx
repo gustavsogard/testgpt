@@ -1,10 +1,23 @@
 import Head from 'next/head'
 import axios from 'axios';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { RotatingLines } from 'react-loader-spinner';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Query from '../components/Query';
+import Quiz from '../components/Quiz';
 
 export default function Home() {
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [quizData, setQuizData] = useState({});
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const query = document.getElementById('query').value;
+    setLoading(true);
+
+    const query = e.target.query.value;
 
     const result = await axios.post('/api/openai', {
       query: query
@@ -12,11 +25,18 @@ export default function Home() {
       .then(res => {
         return res;
       });
-
-    if (result.status === 200) {
-      console.log(result.data);
+      
+    if (result.status == 200 && result.data.status == 'success') {
+      console.log(result.data.data);
+      setQuizStarted(true);
+      setLoading(false);
+      if (JSON.parse(result.data.data).status == "success") {
+        setQuizData(result.data);
+      } else {
+        toast.error('Der skete en fejl. Prøv igen.');
+      }
     } else {
-      console.log('Error');
+      toast.error('Der skete en fejl. Prøv igen.');
     }
   }
 
@@ -24,30 +44,46 @@ export default function Home() {
     <>
       <Head>
         <title>TestGPT</title>
-        <meta name="description" content="Test dine færdigheder i uddannelsen, HA(it.)'s vigtigste fag ved hjælp af OpenAI's teknologi" />
+        <meta name="description" content="Test dine færdigheder ved hjælp af OpenAI's teknologi" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="p-10 h-screen min-w-[600px] relative bg-gradient-to-t from-white to-sky-200">
-        <div className='flex justify-between mb-40'>
-          <p className='mr-2'>
-            Upload et tekststykke og test din viden
-          </p>
-          <div>
-            <p className='font-bold text-xl'>TestGPT</p>
-          </div>
-        </div>
+        <Header />
 
         <div className='flex justify-center w-full'>
-          <form onSubmit={handleSubmit} className='flex justify-center w-full'>
-            <textarea id='query' className='w-6/12 border-2 border-dotted border-sky-400 p-2 rounded-xl h-[200px]' />
-          </form>
+          <QuizWrapper quizStarted={quizStarted} loading={loading} quizData={quizData} handleSubmit={handleSubmit} />
         </div>
 
-        <div className="flex justify-center absolute bottom-4 w-full text-sm -ml-10">
-          <p>Lavet af en studerende på CBS, 2023</p>
-        </div>
+        <Footer />
       </div>
     </>
   )
+}
+
+function QuizWrapper(props: any) {
+  if (props.quizStarted) {
+    return (
+      <div className='flex justify-center w-full'>
+        <Quiz quizData={props.quizData} />
+      </div>
+    )
+  } else if (props.loading) {
+    return (
+      <div className='flex flex-wrap justify-center w-full'>
+        <RotatingLines
+          strokeColor="#000"
+          strokeWidth="2"
+          width="60"
+        />
+        <p className='w-full text-center text-xs mt-4'>Loader spørgsmål...</p>
+      </div>
+    )
+  } else {
+    return (
+      <div className='flex justify-center w-full'>
+        <Query handleSubmit={props.handleSubmit} />
+      </div>
+    )
+  }
 }

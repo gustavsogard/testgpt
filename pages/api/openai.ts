@@ -1,15 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { createCompletion } from '../../lib/openai';
 
-export default function handler(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
     ) {
         switch (req.method) {
             case 'POST':
-                res.status(200).json({ data: req.body.query })
+                const response = await createCompletion(req.body.query);
+                res.status(200).json({ status: 'success', data: response });
                 break;
             default:
-                res.status(405).json({ error: 'Method not allowed' })
+                res.status(405).json({ status: 'error', error: 'Method not allowed' });
                 break;
         }
 }
