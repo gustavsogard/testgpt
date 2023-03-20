@@ -31,10 +31,16 @@ export default function Home() {
       setLoading(false);
       console.log(result.data.data);
 
+      let data;
 
-      const data = JSON.parse(result.data.data);
+      try {
+        data = JSON.parse(result.data.data);
+      } catch (e) {
+        toast.error('Der skete en fejl. Prøv igen.');
+        return;
+      }
 
-      if (data.status == "success" && data.answers.length == 4) {
+      if (data.status == "success" && data.questions.length > 0) {
         setQuizStarted(true);
         setQuizData(data);
       } else {
@@ -81,7 +87,7 @@ function QuizWrapper(props: any) {
           strokeWidth="2"
           width="60"
         />
-        <p className='w-full text-center text-sm font-semibold mt-4'>Loader spørgsmål...</p>
+        <p className='w-full text-center text-sm font-semibold mt-4'>Genererer spørgsmål via OpenAI...</p>
       </div>
     )
   } else {
