@@ -27,11 +27,14 @@ export default function Home() {
       });
       
     if (result.status == 200 && result.data.status == 'success') {
-      console.log(result.data.data);
       setQuizStarted(true);
       setLoading(false);
-      if (JSON.parse(result.data.data).status == "success") {
-        setQuizData(result.data);
+
+      const data = JSON.parse(result.data.data);
+      console.log(data);
+
+      if (data.status == "success") {
+        setQuizData(data);
       } else {
         toast.error('Der skete en fejl. Prøv igen.');
       }
