@@ -6,7 +6,7 @@ export default function Quiz(props: any) {
     const [button, setButton] = useState(0);
 
     return (
-        <div className="flex flex-wrap justify-center">
+        <div id="quiz" className="flex flex-wrap justify-center">
             <h1 className="w-full text-center mb-8">
                 Spørgsmål:
             </h1>
@@ -28,7 +28,7 @@ export default function Quiz(props: any) {
 
 function Answered(props: any) {
     if (props.answered) {
-        let buttons = document.querySelectorAll("button");
+        let buttons = document.getElementById("quiz")!.querySelectorAll("button");
         buttons.forEach((button) => {
             button.setAttribute("disabled", "");
         });

@@ -76,11 +76,11 @@ function QuizWrapper(props: any) {
     return (
       <div className='flex flex-wrap justify-center w-full'>
         <RotatingLines
-          strokeColor="#000"
+          strokeColor="#005796"
           strokeWidth="2"
           width="60"
         />
-        <p className='w-full text-center text-xs mt-4'>Loader spørgsmål...</p>
+        <p className='w-full text-center text-sm font-semibold mt-4'>Loader spørgsmål...</p>
       </div>
     )
   } else {
