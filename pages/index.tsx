@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RotatingLines } from 'react-loader-spinner';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Query from '../components/Query';
 import Quiz from '../components/Quiz';
 
