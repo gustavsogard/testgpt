@@ -41,7 +41,7 @@ export default function Query(props: any) {
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Teknologien er baseret på OpenAIs GPT-3 model. Denne model er trænet på en masse forskellige tekster og kan derfor generere . Teknologien er dog ikke perfekt, så forvent ikke at få 100% relevante spørgsmål. Læs mere <a href="https://openai.com/product/" target="_blank" className='text-sky-500'>her</a>.
+                        Teknologien er baseret på OpenAIs GPT-3 model. Denne model er trænet på en masse forskellige tekster og kan derfor generere tekst. Teknologien er dog ikke perfekt, så forvent ikke at få 100% relevante spørgsmål. Læs mere <a href="https://openai.com/product/" target="_blank" className='text-sky-500'>her</a>.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
