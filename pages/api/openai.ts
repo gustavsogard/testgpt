@@ -23,7 +23,7 @@ export default async function handler(
         res.setHeader("X-RateLimit-Remaining", result.remaining);
 
         if (!result.success) {
-            res.status(429).json({ status: 'error', error: 'Too many requests' });
+            res.status(200).json({ status: 'error', message: 'For mange forespørgsler.' });
             return;
         }
 
@@ -31,9 +31,10 @@ export default async function handler(
             case 'POST':
                 const response = await createCompletion(req.body.query);
                 res.status(200).json({ status: 'success', data: response });
+                // res.status(200).json({ status: 'error', message: "I øjeblikket ser TestGPT for meget traffik. Venligst kom tilbage senere." });
                 break;
             default:
-                res.status(405).json({ status: 'error', error: 'Method not allowed' });
+                res.status(200).json({ status: 'error', message: 'HTTP metoden er ikke tilladt.' });
                 break;
         }
 }

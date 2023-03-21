@@ -26,8 +26,8 @@ export default function Home() {
       .then(res => {
         return res;
       });
-      
-    if (result.status == 200 && result.data.status == 'success') {
+
+    if (result.data.status == 'success') {
       setLoading(false);
       console.log(result.data.data);
 
@@ -47,7 +47,8 @@ export default function Home() {
         toast.error(data.message);
       }
     } else {
-      toast.error('Der skete en fejl. Prøv igen.');
+      setLoading(false);
+      toast.error(result.data.message);
     }
   }
 
