@@ -4,6 +4,7 @@ import Router from 'next/router';
 export default function Quiz(props: any) {
     const [answer, setAnswer] = useState("");
     const [answered, setAnswered] = useState(false);
+    const [answers, setAnswers] = useState([]);
     const [button, setButton] = useState("");
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [currentCorrectAnswer, setCurrentCorrectAnswer] = useState(props.quizData.questions[0].answers[0]);
@@ -13,6 +14,13 @@ export default function Quiz(props: any) {
     async function shuffle(array: []) {
         array.sort(() => Math.random() - 0.5);
     }
+
+    useEffect(() => {
+        if (currentQuestion === 0 && answered === false) {
+            shuffle(props.quizData.questions[0].answers);
+            setAnswers(props.quizData.questions[0].answers);
+        }
+    }, []);
 
     function buttonClick(e: any, answer: any) {
         setButton(e.target.id);
@@ -26,6 +34,7 @@ export default function Quiz(props: any) {
         setButton("");
         setCurrentCorrectAnswer(props.quizData.questions[currentQuestion + 1].answers[0]);
         shuffle(props.quizData.questions[currentQuestion + 1].answers);
+        setAnswers(props.quizData.questions[currentQuestion + 1].answers);
         setCurrentQuestion(currentQuestion + 1);
     }
 
@@ -62,12 +71,12 @@ export default function Quiz(props: any) {
                     </p>
                     <div id="quiz">
                         <div className="w-full flex justify-center">
-                            <button id="0" onClick={(e) => {buttonClick(e, props.quizData.questions[currentQuestion].answers[0])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{props.quizData.questions[currentQuestion].answers[0]}</button>
-                            <button id="1" onClick={(e) => {buttonClick(e, props.quizData.questions[currentQuestion].answers[1])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{props.quizData.questions[currentQuestion].answers[1]}</button>
+                            <button id="0" onClick={(e) => {buttonClick(e, answers[0])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{answers[0]}</button>
+                            <button id="1" onClick={(e) => {buttonClick(e, answers[1])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{answers[1]}</button>
                         </div>
                         <div className="w-full flex justify-center mt-4">
-                            <button id="2" onClick={(e) => {buttonClick(e, props.quizData.questions[currentQuestion].answers[2])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{props.quizData.questions[currentQuestion].answers[2]}</button>
-                            <button id="3" onClick={(e) => {buttonClick(e, props.quizData.questions[currentQuestion].answers[3])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{props.quizData.questions[currentQuestion].answers[3]}</button>
+                            <button id="2" onClick={(e) => {buttonClick(e, answers[2])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{answers[2]}</button>
+                            <button id="3" onClick={(e) => {buttonClick(e, answers[3])}} className="mx-2 px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 disabled:bg-gray-400 rounded-xl transition-all">{answers[3]}</button>
                         </div>
                     </div>
                     <Answered quizData={props.quizData} currentQuestion={currentQuestion} answered={answered} button={button} answer={answer} currentCorrectAnswer={currentCorrectAnswer} increaseScore={increaseScore} nextQuestion={nextQuestion} resultsPage={resultsPage} />
@@ -78,6 +87,12 @@ export default function Quiz(props: any) {
 }
 
 function Answered(props: any) {
+    useEffect(() => {
+        if (props.answer == props.currentCorrectAnswer) {
+            props.increaseScore();
+        }
+    }, [props.answered]);
+
     if (props.answered) {
         let buttons = document.getElementById("quiz")!.querySelectorAll("button");
         buttons.forEach((button) => {
@@ -89,9 +104,6 @@ function Answered(props: any) {
         if (props.answer == props.currentCorrectAnswer) {
             buttons[props.button].classList.add("disabled:bg-green-500");
             check = true;
-            useEffect(() => {
-                props.increaseScore();
-            }, []);
         } else {
             buttons[props.button].classList.add("disabled:bg-red-500");
             buttons.forEach((button) => {
@@ -103,7 +115,7 @@ function Answered(props: any) {
 
         return (
             <>
-            <div className="w-full flex flex-wrap justify-center mt-8">
+            <div className="w-full flex flex-wrap justify-center mt-12">
                 {check ? (
                     <p>Det er rigtigt!</p>
                     ) : (
@@ -112,7 +124,7 @@ function Answered(props: any) {
                 }
             </div>
                 {props.currentQuestion !== props.quizData.questions.length - 1 ? (
-                        <div className="w-full flex justify-center mt-4">
+                        <div className="w-full flex justify-center mt-2">
                             <button onClick={props.nextQuestion} className="px-8 py-2 border-2 border-sky-600 text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 rounded-xl transition-all">Næste spørgsmål</button>
                         </div>
                     ) : (
