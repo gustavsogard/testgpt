@@ -3,6 +3,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Footer from './Footer';
 
 export default function Query(props: any) {
     return (
@@ -60,6 +61,7 @@ export default function Query(props: any) {
                     </AccordionDetails>
                 </Accordion>
             </div>
+            <Footer />
         </div>
     )
 }

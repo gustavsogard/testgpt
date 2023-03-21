@@ -62,12 +62,9 @@ export default function Home() {
       </Head>
       <div className="p-4 md:p-10 h-screen relative bg-gradient-to-t from-white to-sky-200">
         <Header />
-
         <div className='flex justify-center w-full'>
           <QuizWrapper quizStarted={quizStarted} loading={loading} quizData={quizData} handleSubmit={handleSubmit} />
         </div>
-
-        <Footer />
       </div>
     </>
   )
