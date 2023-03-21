@@ -1,32 +1,39 @@
-import type { NextRequest } from 'next/server';
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { NextApiRequest, NextApiResponse } from 'next';
 import { createCompletion } from '../../lib/openai';
-import { ipRateLimit } from '@/lib/ip-rate-limit';
 
-export const config = {
-    runtime: 'edge',
-}
+const redis = new Redis({
+    url: process.env.UPSTASH_REST_API_DOMAIN,
+    token: process.env.UPSTASH_REST_API_TOKEN,
+});
 
-export default async function handler(req: NextRequest) {
-    console.log(req);
-    const res = await ipRateLimit(req);
+const ratelimit = new Ratelimit({
+    redis: redis,
+    limiter: Ratelimit.fixedWindow(1, "5 s"),
+});
 
-    if (res.status !== 200) {
-        return res;
-    }
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+    ) {
+        const identifier = "api";
+        const result = await ratelimit.limit(identifier);
+        res.setHeader("X-RateLimit-Limit", result.limit);
+        res.setHeader("X-RateLimit-Remaining", result.remaining);
 
-    switch (req.method) {
-        case 'POST':
-            const response = await createCompletion(req.body.query);
-            return new Response(JSON.stringify(response), {
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+        if (!result.success) {
+            res.status(429).json({ status: 'error', error: 'Too many requests' });
+            return;
+        }
 
-        default:
-            return new Response(JSON.stringify({ status: 'error', error: 'Method not allowed' }), 
-                { status: 405 }
-            );
-    }
+        switch (req.method) {
+            case 'POST':
+                const response = await createCompletion(req.body.query);
+                res.status(200).json({ status: 'success', data: response });
+                break;
+            default:
+                res.status(405).json({ status: 'error', error: 'Method not allowed' });
+                break;
+        }
 }
